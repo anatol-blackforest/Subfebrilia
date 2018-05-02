@@ -36,8 +36,8 @@ router.get('/', (req, res) => {
               mongoose.disconnect(); 
               return res.render('error', { err })
           })
-      }).post('/:val', (req, res) => {
-          addTemperature(parseFloat(req.params.val)).then(() => res.redirect("/")).catch(err => {
+      }).post('/', (req, res) => {
+          addTemperature(parseFloat(req.body.val)).then(() => res.redirect("/")).catch(err => {
               mongoose.disconnect(); 
               return res.render('error', { err })
           })

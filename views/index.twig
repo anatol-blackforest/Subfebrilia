@@ -8,7 +8,12 @@
 </head>
 <body>
 
-  <h1>{{title}}</h1>
+    <h1>{{title}}</h1>
+
+	<form action="/" method="POST">
+		<input type="text" name="val" placeholder="текущая температура пациента">
+		<input type="submit">
+	</form>
 
 	<ul class="list">
 		{% for item in temperatures|reverse %}
