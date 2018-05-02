@@ -32,12 +32,16 @@ const getTemperature = async () => {
 
 /* Вся температура за сутки. */
 router.get('/', (req, res) => {
-          getTemperature().then(() => res.render('index', { title: 'Все показатели за сегодня', temperatures } )).catch(err => {
+          getTemperature()
+          .then(() => res.render('index', { title: 'Все показатели за сегодня', temperatures } ))
+          .catch(err => {
               mongoose.disconnect(); 
               return res.render('error', { err })
           })
       }).post('/', (req, res) => {
-          addTemperature(parseFloat(req.body.val)).then(() => res.redirect("/")).catch(err => {
+          addTemperature(parseFloat(req.body.val))
+          .then(() => res.redirect("/"))
+          .catch(err => {
               mongoose.disconnect(); 
               return res.render('error', { err })
           })
