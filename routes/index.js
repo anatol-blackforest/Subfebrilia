@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const Schema = mongoose.Schema;
-
+const url = "mongodb://localhost:27017/temperatures";
 const userScheme = new Schema({
     time: String,
     temperature: {
@@ -10,37 +10,34 @@ const userScheme = new Schema({
       default: 36.6
     }
 });
-
-let temperatures
-
 const Value = mongoose.model("Value", userScheme);
 
+let temperatures;
+
 const addTemperature = async temperature => {
-  console.log(temperature)
-  mongoose.connect("mongodb://localhost:27017/temperatures");
+  await mongoose.connect(url);
   let value = new Value({
-      time: new Date(),
+      time: (new Date()).toLocaleString(),
       temperature
   });
   await value.save();
-  return mongoose.disconnect(); 
+  mongoose.disconnect(); 
 }
 
 const getTemperature = async () => {
-  mongoose.connect("mongodb://localhost:27017/usersdb");
+  await mongoose.connect(url);
   temperatures = await Value.find();
-  console.log(temperatures)
-  return mongoose.disconnect();
+  mongoose.disconnect();
 }
 
 /* Вся температура за сутки. */
-router.get('/',  (req, res) => {
-          getTemperature().then(res.render('index', { title: 'Все показатели за сегодня', temperatures } )).catch(error => {
+router.get('/', (req, res) => {
+          getTemperature().then(() => res.render('index', { title: 'Все показатели за сегодня', temperatures } )).catch(err => {
               mongoose.disconnect(); 
               return res.render('error', { err })
           })
       }).post('/:val', (req, res) => {
-          addTemperature(parseFloat(req.params.val)).then(() => res.render('index', { title: 'Все показатели за сегодня', temperatures })).catch(error => {
+          addTemperature(parseFloat(req.params.val)).then(() => res.redirect("/")).catch(err => {
               mongoose.disconnect(); 
               return res.render('error', { err })
           })
