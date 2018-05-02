@@ -10,8 +10,9 @@ const index = require('./routes/index');
 const app = express();
 
 // view engine setup
+app.set("twig options", {strict_variables: false});
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'twig');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -38,7 +39,7 @@ app.use((err, req, res, next) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {error: err.status});
 });
 
 module.exports = app;
