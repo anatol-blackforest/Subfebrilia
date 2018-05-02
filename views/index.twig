@@ -8,5 +8,22 @@
 </head>
 <body>
   {{title}}
+
+  {{temperatures}}
+
+
+										<ul class="list">
+											{% for item in temperatures|reverse %}
+												<li>
+					
+														<p class="p1"><span>Время:</span> {{item.time|escape}}</p>
+														<p class="p1"><span>Температура:</span> {{item.temperature|escape}}</p>
+
+										
+												</li>
+											{% endfor %}
+										</ul>
+
+
 </body>
 </html>
