@@ -24,7 +24,7 @@
             <div>
                   <form action="/" method="POST">
                     <input type="text" name="val" placeholder="текущая температура пациента">
-                    <input type="submit">
+                    <input type="submit" value=">">
                   </form>
             </div>
             </div></td>
@@ -40,6 +40,12 @@
           <p>
             <p><span>Время:</span> {{item.time|escape}}</p>
             <p><span>Температура:</span> {{item.temperature|escape}}</p>
+            <p>
+                <form action="/" data-change="{{item._id}}">
+                  <input type="text" name="val" placeholder="Скорректировать показатель">
+                  <input type="submit" value=">">
+                </form>
+            </p>      
             <p><strong><a data-delete="{{item._id}}">Удалить x</a></strong></p>
           </p>
         {% endfor %}

@@ -24,4 +24,16 @@ window.onload = function(){
     }
   });
 
+  document.addEventListener("submit", function(e){
+    if(e.target.dataset.change){
+        e.preventDefault();
+        let xhr = new XMLHttpRequest();
+        xhr.open('PUT', `/${e.target.dataset.change}/${e.target.firstElementChild.value}`, true);
+        xhr.send();
+        xhr.onreadystatechange = function() { 
+          location.href = "/"
+        }
+    }
+  });
+
 }

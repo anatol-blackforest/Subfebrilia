@@ -1,5 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
+
+// const getTemperature = require('./modules/getTemperature');
+// const addTemperature = require('./modules/addTemperature');
+// const correctTemperature = require('./modules/correctTemperature');
+// const deleteTemperature = require('./modules/deleteTemperature');
+
 const router = express.Router();
 const Schema = mongoose.Schema;
 const url = "mongodb://localhost:27017/temperatures";
@@ -30,9 +36,15 @@ const addTemperature = async temperature => {
   mongoose.disconnect(); 
 }
 
+const correctTemperature = async (id, temperature) => {
+    await mongoose.connect(url);
+    await Value.findByIdAndUpdate(id, {temperature})
+    mongoose.disconnect();
+}
+
 const deleteTemperature = async (id) => {
     await mongoose.connect(url);
-    let removeResult = await Value.findByIdAndRemove(id)
+    await Value.findByIdAndRemove(id)
     mongoose.disconnect();
 }
 
@@ -51,6 +63,13 @@ router.get('/', (req, res) => {
               mongoose.disconnect(); 
               return res.render('error', { err })
           })
+      }).put('/:id/:val', (req, res) => {
+         correctTemperature(req.params.id, parseFloat(req.params.val))
+          .then(() => res.redirect("/"))
+          .catch(err => {
+              mongoose.disconnect(); 
+              return res.render('error', { err })
+          })
       }).delete('/:id', (req, res) => {
           deleteTemperature(req.params.id)
           .then(() => res.redirect("/"))
@@ -59,8 +78,6 @@ router.get('/', (req, res) => {
               return res.render('error', { err })
           })
       })
-      // .put('/', async (req, res) => {
-      //   res.render('index', { title: 'Скорректировать показатель' });
-      // })
+
 
 module.exports = router;
