@@ -2,7 +2,7 @@ html,body {margin:0;padding:0;background:#fff url(../images/base-bg.gif);width:1
 * html #wrap{height: 100%;}
 p,td { font-family:Arial, Helvetica, sans-serif; margin-top: 0px;}
 a img{border:0;}
-a{color:#e05e14;text-decoration: underline;cursor: pointer}
+a{color:#e05e14;text-decoration: underline;}
 a:hover{
 	color:#EE7E3C;
 	text-decoration: underline;

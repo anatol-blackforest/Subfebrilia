@@ -1,28 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>{{title}}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<title>{{title}}</title>
+<meta name="description" content="Medical website">
+<meta name="keywords" content="Medical website">
+<link rel='stylesheet' href='/stylesheets/style.css'>
+<script src="/scripts/script.js"></script>
 </head>
 <body>
-
-    <h1>{{title}}</h1>
-
-	<form action="/" method="POST">
-		<input type="text" name="val" placeholder="текущая температура пациента">
-		<input type="submit">
-	</form>
-
-	<ul class="list">
-		{% for item in temperatures|reverse %}
-			<li>
-				<p class="p1"><span>Время:</span> {{item.time|escape}}</p>
-				<p class="p1"><span>Температура:</span> {{item.temperature|escape}}</p>
-			</li>
-		{% endfor %}
-	</ul>
-
+    <div id="page">
+      <div><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#000000">
+          <tr>
+            <td height="121" valign="top"><div id="logo"><img src="images/logo.gif" alt=""></div>
+              <div id="company_name">Температура</div>
+              <div id="slogan">{{title}}</div></td>
+            </td>
+          </tr>
+          <tr>
+            <td height="148" valign="top" id="intro">
+            <div>
+                  <form action="/" method="POST">
+                    <input type="text" name="val" placeholder="текущая температура пациента">
+                    <input type="submit">
+                  </form>
+            </div>
+            </div></td>
+          </tr>
+        </table></td>
+        <td width="400"><img src="images/img01.jpg" alt="" width="400" height="269"></td>
+      </tr>
+    </table>
+    </div>
+    <div class="body_txt">
+        <h1>{{title}}</h1>
+        {% for item in temperatures|reverse %}
+          <p>
+            <p><span>Время:</span> {{item.time|escape}}</p>
+            <p><span>Температура:</span> {{item.temperature|escape}}</p>
+            <p><strong><a data-delete="{{item._id}}">Удалить x</a></strong></p>
+          </p>
+        {% endfor %}
+    </div>
+    <div id="footer">
+      <div class="bottom_addr">Динамика температуры</div>
+    </div>
+    </div>
 </body>
 </html>

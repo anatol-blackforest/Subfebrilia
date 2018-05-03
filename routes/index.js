@@ -14,6 +14,12 @@ const Value = mongoose.model("Value", userScheme);
 
 let temperatures;
 
+const getTemperature = async () => {
+  await mongoose.connect(url);
+  temperatures = await Value.find();
+  mongoose.disconnect();
+}
+
 const addTemperature = async temperature => {
   await mongoose.connect(url);
   let value = new Value({
@@ -24,10 +30,10 @@ const addTemperature = async temperature => {
   mongoose.disconnect(); 
 }
 
-const getTemperature = async () => {
-  await mongoose.connect(url);
-  temperatures = await Value.find();
-  mongoose.disconnect();
+const deleteTemperature = async (id) => {
+    await mongoose.connect(url);
+    let removeResult = await Value.findByIdAndRemove(id)
+    mongoose.disconnect();
 }
 
 /* Вся температура за сутки. */
@@ -45,13 +51,16 @@ router.get('/', (req, res) => {
               mongoose.disconnect(); 
               return res.render('error', { err })
           })
+      }).delete('/:id', (req, res) => {
+          deleteTemperature(req.params.id)
+          .then(() => res.redirect("/"))
+          .catch(err => {
+              mongoose.disconnect(); 
+              return res.render('error', { err })
+          })
       })
-      
       // .put('/', async (req, res) => {
       //   res.render('index', { title: 'Скорректировать показатель' });
-      // })
-      // .delete('/', async (req, res) => {
-      //   res.render('index', { title: 'Удалить показатель' });
       // })
 
 module.exports = router;
