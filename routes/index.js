@@ -23,10 +23,8 @@ const getTemperature = async res => {
             temperatures = await Value.find();
             await mongoose.disconnect();
             isProcessing = false
-            res.render('index', { title: 'Все показатели за сегодня', temperatures } )
-        }else{
-            res.render('index', { title: 'Все показатели за сегодня', temperatures } )
         }
+        res.render('index', { title: 'Все показатели за сегодня', temperatures } )
     } catch (err) {
         console.log(err)
         res.render('error', { err })
@@ -45,10 +43,8 @@ const addTemperature = async (res, temperature) => {
             await value.save();
             await mongoose.disconnect(); 
             isProcessing = false
-            res.redirect("/")
-        }else{
-            res.redirect("/")
-        }
+        }    
+        res.redirect("/")
     } catch (err) {
         console.log(err)
         res.render('error', { err })
@@ -63,10 +59,8 @@ const correctTemperature = async (res, id, temperature) => {
             await Value.findByIdAndUpdate(id, {temperature})
             await mongoose.disconnect();
             isProcessing = false
-            res.redirect("/")
-        }else{
-            res.redirect("/")
-        }
+        }    
+        res.redirect("/")
     } catch (err) {
         console.log(err)
         res.render('error', { err })
@@ -81,10 +75,8 @@ const deleteTemperature = async (res, id) => {
             await Value.findByIdAndRemove(id)
             await mongoose.disconnect();
             isProcessing = false
-            res.redirect("/")
-        }else{
-            res.redirect("/")
-        }
+        }    
+        res.redirect("/")
     } catch (err) {
         console.log(err)
         res.render('error', { err })    
