@@ -13,14 +13,20 @@ const userScheme = new Schema({
 });
 const Value = mongoose.model("Value", userScheme);
 
-let temperatures;
+let temperatures, isProcessing = false;
 
 const getTemperature = async res => {
     try {
-        await mongoose.connect(url);
-        temperatures = await Value.find();
-        await mongoose.disconnect();
-        res.render('index', { title: 'Все показатели за сегодня', temperatures } )
+        if(!isProcessing){
+            isProcessing = true
+            await mongoose.connect(url);
+            temperatures = await Value.find();
+            await mongoose.disconnect();
+            isProcessing = false
+            res.render('index', { title: 'Все показатели за сегодня', temperatures } )
+        }else{
+            res.render('index', { title: 'Все показатели за сегодня', temperatures } )
+        }
     } catch (err) {
         console.log(err)
         res.render('error', { err })
@@ -29,14 +35,20 @@ const getTemperature = async res => {
 
 const addTemperature = async (res, temperature) => {
     try {
-        await mongoose.connect(url);
-        let value = new Value({
-            time: (new Date()).toLocaleString(),
-            temperature
-        });
-        await value.save();
-        await mongoose.disconnect(); 
-        res.redirect("/")
+        if(!isProcessing){
+            isProcessing = true
+            await mongoose.connect(url);
+            let value = new Value({
+                time: (new Date()).toLocaleString(),
+                temperature
+            });
+            await value.save();
+            await mongoose.disconnect(); 
+            isProcessing = false
+            res.redirect("/")
+        }else{
+            res.redirect("/")
+        }
     } catch (err) {
         console.log(err)
         res.render('error', { err })
@@ -45,10 +57,16 @@ const addTemperature = async (res, temperature) => {
 
 const correctTemperature = async (res, id, temperature) => {
     try {
-        await mongoose.connect(url);
-        await Value.findByIdAndUpdate(id, {temperature})
-        await mongoose.disconnect();
-        res.redirect("/")
+        if(!isProcessing){
+            isProcessing = true
+            await mongoose.connect(url);
+            await Value.findByIdAndUpdate(id, {temperature})
+            await mongoose.disconnect();
+            isProcessing = false
+            res.redirect("/")
+        }else{
+            res.redirect("/")
+        }
     } catch (err) {
         console.log(err)
         res.render('error', { err })
@@ -57,10 +75,16 @@ const correctTemperature = async (res, id, temperature) => {
 
 const deleteTemperature = async (res, id) => {
     try {
-        await mongoose.connect(url);
-        await Value.findByIdAndRemove(id)
-        await mongoose.disconnect();
-        res.redirect("/")
+        if(!isProcessing){
+            isProcessing = true
+            await mongoose.connect(url);
+            await Value.findByIdAndRemove(id)
+            await mongoose.disconnect();
+            isProcessing = false
+            res.redirect("/")
+        }else{
+            res.redirect("/")
+        }
     } catch (err) {
         console.log(err)
         res.render('error', { err })    
@@ -77,6 +101,5 @@ router.get('/', (req, res) => {
       }).delete('/:id', (req, res) => {
           deleteTemperature(res, req.params.id)
       })
-
 
 module.exports = router;
