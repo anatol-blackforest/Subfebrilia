@@ -6,6 +6,8 @@ const userScheme = new Schema({
     time: String,
     temperature: {
       type: Number,
+      min: 35,
+      max: 42,
       default: 36.6
     }
 });
