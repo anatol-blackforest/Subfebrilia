@@ -1,4 +1,4 @@
-const Value = require('../config').Value;
+const Value = require('./schema').Value;
 
 module.exports = async res => {
     try {
