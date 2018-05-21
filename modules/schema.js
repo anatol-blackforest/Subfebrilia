@@ -10,4 +10,6 @@ const userScheme = new Schema({
     }
 });
 
-exports.Value = mongoose.model("Value", userScheme);
+mongoose.model("Value", userScheme);
+
+exports.Value = mongoose.model("Value")
